@@ -11,22 +11,23 @@
 using namespace std;
 
 int fact(int i, vi &dp) {
-    if (i == 1) return 1;
+    if (i == 1) {
+        dp[i] = 1;
+        return 1;
+    }
     if (dp[i] != 0) return dp[i];
     dp[i] = i * fact(i-1, dp);
     return dp[i];
 }
 
-int dfs(vector<vi> g, int i, int v_size, vi fact, int n, set<int> visited) {
+int dfs(vector<vi> g, int i, int visited, vi fact, int n) {
     if (g[i].empty()) {
-        return fact[n - v_size];
+        return fact[n - visited];
     }
-    v_size++;
-    visited.insert(i);
+    visited++;
     int total = 0;
     loop(v, 0, g[i].size()) {
-        if (!visited.count(g[i][v])) continue;
-        total += dfs(g, g[i][v], v_size, fact, n, visited);
+        total += dfs(g, g[i][v], visited, fact, n);
     }
     return total;
 }
@@ -36,14 +37,14 @@ signed main() {
     int n,m;
     cin >> n >> m;
     vector<vi> g(n+1);
-    loop(i, 1, n+1) {
+    loop(i, 1, m+1) {
         int a, b;
         cin >> a >> b;
         g[a].pb(b);
     }
     vi dp(17);
-    set<int> visited;
+    dp[0] = 1;
     fact(16, dp);
-    cout << dfs(g, 1, 0, dp, n, visited) << endl;
+    cout << dfs(g, 1, 0, dp, n) << endl;
     return 0;
 }
