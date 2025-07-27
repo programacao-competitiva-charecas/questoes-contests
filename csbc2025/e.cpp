@@ -18,7 +18,7 @@ signed main() {
     loop(i,a,b+1){
         if(i== 0){
             cout<< "Y"<< endl;
-            break;
+            return;
         }
         if(i<0) cont++;
     }
